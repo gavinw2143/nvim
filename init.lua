@@ -1,4 +1,5 @@
 require("core.lazy")
+require("core.fastagent")
 require("config.autocmds")
 require("config.mappings")
 require("config.options")
