@@ -14,6 +14,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	end
 end
 vim.opt.rtp:prepend(lazypath)
+vim.opt.termguicolors = true
 
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
@@ -25,14 +26,37 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
 	spec = {
 		{
-			"folke/tokyonight.nvim",
-			config = function()
-				vim.cmd.colorscheme("tokyonight")
-			end,
-		},
-
-		{
 			"nvim-lua/plenary.nvim",
+		},
+		{
+			"folke/tokyonight.nvim",
+			opts = {
+				transparent = true,
+				styles = {
+					sidebars = "transparent",
+					floats = "transparent",
+				},
+			},
+			config = function()
+				require("tokyonight").setup({
+					style = "storm",
+					transparent = true,
+					styles = {
+						sidebars = "transparent",
+						floats = "transparent",
+					}
+				})
+				-- Apply the colorscheme
+				vim.cmd("colorscheme tokyonight")
+
+				-- 3) Ensure any stray ‘Normal’ or ‘NormalFloat’ highlights don’t paint a bg
+				vim.cmd([[ 
+  				hi Normal       guibg=NONE ctermbg=NONE
+  				hi NormalNC     guibg=NONE ctermbg=NONE
+  				hi NormalFloat  guibg=NONE ctermbg=NONE
+  				hi EndOfBuffer  guibg=NONE ctermbg=NONE
+				]])
+			end
 		},
 
 		{

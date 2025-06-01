@@ -14,22 +14,36 @@ vim.keymap.set("i", "<c-'>", "`")
 -- Window selection
 -- smart window mover: if you can move in direction `d` do so,
 -- otherwise split in that direction.
-local function smart_win(dir, split_cmd)
-	local old_win = vim.api.nvim_get_current_win()
-	-- try to move
-	vim.cmd("wincmd " .. dir)
-	-- if we’re still in the same window, the move failed → split
-	if vim.api.nvim_get_current_win() == old_win then
-		vim.cmd(split_cmd)
-		vim.cmd("Oil")
+local function clear_all_bindings()
+	for _, w in ipairs(vim.api.nvim_list_wins()) do
+		pcall(function()
+			vim.api.nvim_set_option_value("scrollbind", false, { win = w })
+			vim.api.nvim_set_option_value("cursorbind", false, { win = w })
+		end)
 	end
 end
 
--- map <leader>{h,j,k,l> to either move or split+move
+local function smart_win(dir, split_cmd)
+	local old_win = vim.api.nvim_get_current_win()
+
+	-- 1) Try to move
+	vim.cmd("wincmd " .. dir)
+
+	-- 2) If we’re still in the same window, the move failed → split + Oil
+	if vim.api.nvim_get_current_win() == old_win then
+		vim.cmd(split_cmd)
+		vim.cmd("Oil")
+
+		-- 3) As soon as the split (and Oil) is open, clear scrollbind/cursorbind in all panes:
+		clear_all_bindings()
+	end
+end
+
+-- map <leader>{h,j,k,l> to smart_win
 local dirs = {
-	h = "leftabove vsplit", -- new window goes to the left
-	j = "belowright split", -- new window goes below
-	k = "aboveleft split",  -- new window goes above
+	h = "leftabove vsplit",  -- new window goes to the left
+	j = "belowright split",  -- new window goes below
+	k = "aboveleft split",   -- new window goes above
 	l = "rightbelow vsplit", -- new window goes to the right
 }
 
@@ -38,6 +52,7 @@ for key, split_cmd in pairs(dirs) do
 		smart_win(key, split_cmd)
 	end, { desc = ("goto or create %s-window"):format(key) })
 end
+
 vim.keymap.set("n", "<leader>q", "<C-w>q")
 
 -- Tab movement
