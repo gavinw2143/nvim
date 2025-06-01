@@ -10,6 +10,7 @@ vim.keymap.set("n", "<leader>s", "<C-w>v<C-w>l<cmd>tcd ~/scratch<CR><cmd>Oil ~/s
 vim.keymap.set("n", "<leader>op", "<cmd>Oil ~/Projects/<CR>")
 vim.keymap.set("n", "<leader>on", "<cmd>Oil ~/.config/nvim/<CR>")
 
+vim.keymap.set("i", "<c-'>", "`")
 -- Window selection
 -- smart window mover: if you can move in direction `d` do so,
 -- otherwise split in that direction.
@@ -39,9 +40,6 @@ for key, split_cmd in pairs(dirs) do
 end
 vim.keymap.set("n", "<leader>q", "<C-w>q")
 
--- Agent plugin
-vim.keymap.set("n", "<leader>gp", "<cmd>FastAgentPrompt<CR>")
-
 -- Tab movement
 vim.keymap.set("n", "<leader>th", "<cmd>-tabmove<CR>")
 vim.keymap.set("n", "<leader>tl", "<cmd>+tabmove<CR>")
@@ -52,7 +50,7 @@ vim.keymap.set("n", "<leader>tq", "<cmd>tabclose<CR>")
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>")
 
--- Centering
+-- Page movement
 vim.keymap.set("n", "D", "<c-d>zz")
 vim.keymap.set("n", "U", "<c-u>zz")
 

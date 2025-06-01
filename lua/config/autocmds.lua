@@ -15,3 +15,20 @@ vim.api.nvim_create_autocmd('TermOpen', {
 		vim.opt.relativenumber = false
 	end,
 })
+
+-- Auto-disable scrollbind & cursorbind in any new or entered window
+vim.api.nvim_create_autocmd({ "WinNew", "WinEnter" }, {
+	callback = function()
+		vim.wo.scrollbind = false
+		vim.wo.cursorbind = false
+	end,
+})
+
+-- If the ‘diff’ option turns on, clear it immediately
+vim.api.nvim_create_autocmd({ "OptionSet" }, {
+	pattern = "diff",
+	callback = function()
+		vim.wo.scrollbind = false
+		vim.wo.cursorbind = false
+	end,
+})

@@ -4,12 +4,16 @@ return {
 		tag = '0.1.8',
 		dependencies = {
 			'nvim-lua/plenary.nvim',
+			'stevearc/oil.nvim',
 			{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
 		},
 		config = function()
 			require('telescope').setup {
 				pickers = {
 					find_files = {
+						theme = "ivy"
+					},
+					buffers = {
 						theme = "ivy"
 					}
 				},
@@ -22,6 +26,8 @@ return {
 
 			vim.keymap.set("n", "<space>fh", require('telescope.builtin').help_tags)
 			vim.keymap.set("n", "<space>fd", require('telescope.builtin').find_files)
+			vim.keymap.set("n", "<space>fb", require('telescope.builtin').buffers)
+			vim.keymap.set("n", "<space>ft", require('telescope.builtin').treesitter)
 			vim.keymap.set("n", "<space>en", function()
 				require('telescope.builtin').find_files({
 					cwd = vim.fn.stdpath("config")

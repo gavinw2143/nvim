@@ -1,9 +1,8 @@
 require("core.lazy")
-require("core.fastagent")
 require("config.autocmds")
 require("config.mappings")
 require("config.options")
-
+vim.opt.clipboard:append("unnamedplus")
 local function open_init_tabs()
 	-- close all other tabs
 	vim.cmd("tabonly")
